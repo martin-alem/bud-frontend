@@ -1,0 +1,13 @@
+.Main {
+  width: 50%;
+  height: 500px;
+  margin: 10rem auto;
+}
+
+.Main-chart {
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--color-primary);
+  padding: 2rem;
+  
+}

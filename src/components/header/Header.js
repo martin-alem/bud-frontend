@@ -48,8 +48,8 @@ function Header() {
   }
   return (
     <div className="Header">
-      <AppBar position="static" sx={{ backgroundColor: "#f6f9fc" }}>
-        <Toolbar sx={{ justifyContent: "flex-end" }}>
+      <AppBar position="static" sx={{ backgroundColor: "#f6f9fc", width: "100%"}}>
+        <Toolbar sx={{ justifyContent: "flex-end", width: "100%" }}>
           {auth && (
             <div>
               <Avatar {...stringAvatar("Martin Alemajoh")} onClick={handleMenu} />
