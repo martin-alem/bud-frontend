@@ -1,25 +1,27 @@
 .Main {
   width: 50%;
-  height: 500px;
   margin: 5rem auto;
 }
 
 .Main-chart {
+  width: 100%;
   display: flex;
-  justify-content: space-around;
-  background-color: var(--color-primary);
+  justify-content: space-between;
   padding: 2rem;
-  
+}
+
+.Main-bar-chart {
+  width: 50%;
 }
 
 @media screen and (max-width: 500px) {
-  .Main{
+  .Main {
     width: 100%;
   }
 }
 
 @media screen and (max-width: 600px) {
-  .Main{
+  .Main {
     width: 100%;
   }
 }
