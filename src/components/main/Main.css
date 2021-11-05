@@ -1,0 +1,58 @@
+.Main {
+  width: 50%;
+  margin: 5rem auto;
+}
+
+.Main-chart {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Main-bar-chart {
+  width: 50%;
+}
+
+.Main-pie-chart {
+  width: 50%;
+}
+
+@media screen and (max-width: 1024px) {
+  .Main {
+    width: 100%;
+  }
+
+  .Main-chart {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .Main-bar-chart {
+    width: 100%;
+  }
+
+  .Main-pie-chart {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .Main {
+    width: 100%;
+  }
+
+  .Main-chart {
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .Main-bar-chart {
+    width: 100%;
+  }
+
+  .Main-pie-chart {
+    width: 100%;
+  }
+}
