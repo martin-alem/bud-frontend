@@ -13,7 +13,24 @@ function Main() {
           <BarChart />
         </div>
         <div className="Main-pie-chart">
-          <PieChart />
+          <div className="Main-pie">
+            <PieChart />
+          </div>
+
+          <div className="Main-details">
+            <div className="Main-income">
+              <div className="Main-income-label"></div>
+              <p>$ 40,000</p>
+            </div>
+            <div className="Main-expenditure">
+              <div className="Main-expenditure-label"></div>
+              <p>$ 10,000</p>
+            </div>
+            <div className="Main-saving">
+              <div className="Main-saving-label"></div>
+              <p>$ 3000</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
