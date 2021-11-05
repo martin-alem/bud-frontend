@@ -2,6 +2,7 @@ import React from "react";
 import "./Main.css";
 import DateSelector from "./../date_picker/DatePicker";
 import BarChart from "../bar_chart/BarChart";
+import PieChart from "../pie_chart/PieChart";
 
 function Main() {
   return (
@@ -12,7 +13,7 @@ function Main() {
           <BarChart />
         </div>
         <div className="Main-pie-chart">
-          <h1>Pie Chart</h1>
+          <PieChart />
         </div>
       </div>
     </div>

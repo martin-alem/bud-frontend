@@ -16,7 +16,7 @@ function DateSelector() {
         onChange={(newValue) => {
           setValue(newValue);
         }}
-        renderInput={(params) => <TextField {...params} sx={{ fontSize: "2.5rem", width: "400px", marginBottom: "1rem" }} />}
+        renderInput={(params) => <TextField {...params} sx={{ margin: "1rem" }} />}
       />
     </LocalizationProvider>
   );
