@@ -3,6 +3,7 @@ import "./Main.css";
 import DateSelector from "./../date_picker/DatePicker";
 import BarChart from "../bar_chart/BarChart";
 import PieChart from "../pie_chart/PieChart";
+import AddBudgetModal from "../modal/Modal";
 
 function Main() {
   return (
@@ -32,6 +33,9 @@ function Main() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="Main-add">
+        <AddBudgetModal />
       </div>
     </div>
   );
