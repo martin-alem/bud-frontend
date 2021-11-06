@@ -37,6 +37,16 @@ function Main() {
       <div className="Main-add">
         <AddBudgetModal />
       </div>
+
+      <div className="Main-expense">
+
+        {/* 1. create a card component using the material UI library
+
+        2. render the card here
+
+        3. make this container a grid with 2 columns */}
+
+      </div>
     </div>
   );
 }
