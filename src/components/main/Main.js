@@ -40,7 +40,7 @@ function Main() {
 
       <div className="Main-expense">
 
-        {/* 1. create a card component
+        {/* 1. create a card component using the material UI library
 
         2. render the card here
 
