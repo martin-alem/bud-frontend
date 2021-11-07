@@ -1,13 +1,20 @@
 import React from "react";
+import { getMonthAsString } from "../../util/utility";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
-import DateSelector from "../date_picker/DatePicker";
 import TextField from "@mui/material/TextField";
-import SelectInput from "../select_input/SelectInput";
-import SelectCategoryInput from "../select_category_input/SelectCategoryInput";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 const style = {
   position: "absolute",
@@ -16,24 +23,89 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   backgroundColor: "background.paper",
-  border: "2px solid #000",
+  border: "1px solid #7269ef",
   boxShadow: 24,
   p: 4,
 };
 
-function AddBudgetModal() {
-  const [open, setOpen] = React.useState(false);
-  const [budgetType, setBudgetType] = React.useState("income");
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+function AddBudgetModal(props) {
+  const [openModal, setOpenModal] = React.useState(false);
+  const [type, setType] = React.useState("income");
+  const [date, setDate] = React.useState(new Date());
+  const [category, setCategory] = React.useState("");
+  const [amount, setAmount] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [error, setError] = React.useState({ active: false, type: "info", message: "" });
 
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+  const handleTypeChange = (event) => {
+    setCategory("");
+    setType(event.target.value);
+  };
+
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
+  };
+
+  const handleChangeAmount = (event) => {
+    setAmount(event.target.value);
+  };
+
+  const handleChangeDescription = (event) => {
+    setDescription(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    if (category === "" || amount === "" || description === "") {
+      setError({ active: true, type: "error", message: "Oh no! please provide all fields" });
+    } else if (isNaN(parseFloat(amount))) {
+      setError({ active: true, type: "error", message: "Ops! amount must be a number" });
+    } else {
+      setError({ active: true, type: "info", message: "Success! Budget successfully saved" });
+      const newAmount = parseFloat(amount);
+      const month = getMonthAsString(date);
+      const year = new Date(date).getFullYear().toString();
+      const budgetData = { name: description, amount: newAmount, category: category, month: month, year: year, budget_type: type };
+      window
+        .fetch("https://bud-backendapi.herokuapp.com/budgets", { method: "POST", body: JSON.stringify(budgetData), headers: { "Content-Type": "application/json" } })
+        .then((response) => {
+          response
+            .json()
+            .then((data) => {
+              props.setBudget((prevState) => {
+                return [ ...prevState, data ];
+              });
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      setCategory("");
+      setType(type);
+      setAmount("");
+      setDescription("");
+    }
+
+    setTimeout(() => setError(false), 4000);
+  };
   return (
     <div>
-      <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>
+      <Button variant="outlined" onClick={handleOpenModal} startIcon={<AddIcon />}>
         Add Budget
       </Button>
-      <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <Modal open={openModal} onClose={handleCloseModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
+          {error["active"] ? (
+            <Alert severity={error["type"]}>
+              <AlertTitle>{error["type"].toUpperCase()}</AlertTitle>
+              <strong> {error["message"]}</strong>
+            </Alert>
+          ) : null}
+
           <Typography id="modal-modal-title" variant="h3" sx={{ textAlign: "center" }} component="div">
             Add Budget
           </Typography>
@@ -45,12 +117,50 @@ function AddBudgetModal() {
             noValidate
             autoComplete="off"
           >
-            <DateSelector />
-            <SelectInput setBudgetType={setBudgetType} />
-            {budgetType === "income" ? <TextField id="standard-basic" label="Income Category" variant="outlined" /> : <SelectCategoryInput />}
-            <TextField id="standard-basic" label="Amount" variant="outlined" />
-            <TextField id="standard-basic" label="Description" variant="outlined" />
-            <Button variant="contained" sx={{ backgroundColor: "#7269ef", ":hover": { backgroundColor: "#7269ea" }, fontWeight: "bolder" }} startIcon={<AddIcon />}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                disableFuture
+                label="Pick Date"
+                value={date}
+                onChange={(newValue) => {
+                  setDate(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} sx={{ margin: "1rem" }} />}
+              />
+            </LocalizationProvider>
+            <Box sx={{ width: "100%" }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Budget Type</InputLabel>
+                <Select labelId="demo-simple-select-label" id="demo-simple-select" value={type} label="Budget Type" onChange={handleTypeChange}>
+                  <MenuItem value="income">Income</MenuItem>
+                  <MenuItem value="expense">Expenditure</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+            {type === "income" ? (
+              <TextField value={category} onChange={handleCategoryChange} id="standard-basic" label="Income Category" variant="outlined" />
+            ) : (
+              <Box sx={{ width: "100%" }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Expense Category</InputLabel>
+                  <Select labelId="demo-simple-select-label" id="demo-simple-select" value={category} label="Expense Category" onChange={handleCategoryChange}>
+                    <MenuItem value="food">Food</MenuItem>
+                    <MenuItem value="rent">Rent</MenuItem>
+                    <MenuItem value="utilities">Utilities</MenuItem>
+                    <MenuItem value="cloths">Cloths</MenuItem>
+                    <MenuItem value="transportation">Transportation</MenuItem>
+                    <MenuItem value="insurance">Insurance</MenuItem>
+                    <MenuItem value="medical">Medical</MenuItem>
+                    <MenuItem value="investment">Investment</MenuItem>
+                    <MenuItem value="loans">Loans</MenuItem>
+                    <MenuItem value="other">Other</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            )}
+            <TextField value={amount} onChange={handleChangeAmount} id="standard-basic" label="Amount" variant="outlined" />
+            <TextField value={description} onChange={handleChangeDescription} id="standard-basic" label="Description" variant="outlined" />
+            <Button onClick={handleSubmit} variant="contained" sx={{ backgroundColor: "#7269ef", ":hover": { backgroundColor: "#7269ea" }, fontWeight: "bolder" }} startIcon={<AddIcon />}>
               Add Budget
             </Button>
           </Box>
