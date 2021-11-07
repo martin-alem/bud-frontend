@@ -12,6 +12,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 const style = {
   position: "absolute",
@@ -30,15 +32,15 @@ function AddBudgetModal() {
   const [type, setType] = React.useState("income");
   const [date, setDate] = React.useState(new Date());
   const [category, setCategory] = React.useState("");
-  const [budgetType, setBudgetType] = React.useState("");
   const [amount, setAmount] = React.useState("");
   const [description, setDescription] = React.useState("");
+  const [error, setError] = React.useState({ active: false, type: "info", message: "" });
 
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
   const handleTypeChange = (event) => {
+    setCategory("");
     setType(event.target.value);
-    setBudgetType(event.target.value);
   };
 
   const handleCategoryChange = (event) => {
@@ -54,7 +56,19 @@ function AddBudgetModal() {
   };
 
   const handleSubmit = () => {
-    console.log(date, category, budgetType, amount, description);
+    if ((category === "" || amount === "" || description === "")) {
+      setError({ active: true, type: "error", message: "Provide all fields" });
+    } else if (isNaN(parseFloat(amount))) {
+      setError({ active: true, type: "error", message: "Amount must be a number" });
+    } else {
+      setError({ active: true, type: "info", message: "Success! Budget successfully saved" });
+      setCategory("");
+      setType(type);
+      setAmount("");
+      setDescription("");
+    }
+
+    setTimeout(() => setError(false), 4000);
   };
   return (
     <div>
@@ -63,6 +77,13 @@ function AddBudgetModal() {
       </Button>
       <Modal open={openModal} onClose={handleCloseModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
+          {error["active"] ? (
+            <Alert severity={error["type"]}>
+              <AlertTitle>{error["type"].toUpperCase()}</AlertTitle>
+              <strong> {error["message"]}</strong>
+            </Alert>
+          ) : null}
+
           <Typography id="modal-modal-title" variant="h3" sx={{ textAlign: "center" }} component="div">
             Add Budget
           </Typography>
@@ -88,7 +109,7 @@ function AddBudgetModal() {
             <Box sx={{ width: "100%" }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Budget Type</InputLabel>
-                <Select labelId="demo-simple-select-label" id="demo-simple-select" value={budgetType} label="Budget Type" onChange={handleTypeChange}>
+                <Select labelId="demo-simple-select-label" id="demo-simple-select" value={type} label="Budget Type" onChange={handleTypeChange}>
                   <MenuItem value="income">Income</MenuItem>
                   <MenuItem value="expenditure">Expenditure</MenuItem>
                 </Select>
