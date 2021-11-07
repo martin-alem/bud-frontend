@@ -1,9 +1,11 @@
 import React from "react";
 import "./Main.css";
+import Grid from "@mui/material/Grid";
 import DateSelector from "./../date_picker/DatePicker";
 import BarChart from "../bar_chart/BarChart";
 import PieChart from "../pie_chart/PieChart";
 import AddBudgetModal from "../modal/Modal";
+import ExpenseCard from "../card/ExpenseCard";
 
 function Main() {
   return (
@@ -39,13 +41,35 @@ function Main() {
       </div>
 
       <div className="Main-expense">
-
-        {/* 1. create a card component using the material UI library
-
-        2. render the card here
-
-        3. make this container a grid with 2 columns */}
-
+        <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }} sx={{ justifyContent: "center" }}>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+        </Grid>
       </div>
     </div>
   );
