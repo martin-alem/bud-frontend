@@ -6,9 +6,47 @@ import BarChart from "../bar_chart/BarChart";
 import PieChart from "../pie_chart/PieChart";
 import AddBudgetModal from "../modal/Modal";
 import ExpenseCard from "../card/ExpenseCard";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function Main() {
-  return (
+  const [budget, setBudget] = React.useState([]);
+  const [fetching, setFetching] = React.useState(false);
+
+  React.useEffect(() => {
+    const fetchBudget = async () => {
+      setFetching(true);
+      window
+        .fetch("https://bud-backendapi.herokuapp.com/budgets", { method: "GET" })
+        .then((response) => {
+          if (response.ok) {
+            response
+              .json()
+              .then((data) => {
+                setFetching(false);
+                setBudget(data);
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+          } else {
+          }
+        })
+        .catch((error) => {
+          setFetching(false);
+          console.error(error);
+        });
+    };
+
+    fetchBudget();
+  }, []);
+  return fetching ? (
+    <>
+      <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={fetching}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </>
+  ) : (
     <div className="Main">
       <DateSelector />
       <div className="Main-chart">
@@ -41,34 +79,16 @@ function Main() {
       </div>
 
       <div className="Main-expense">
-        <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }} sx={{ justifyContent: "center" }}>
-          <Grid item>
-            <ExpenseCard />
-          </Grid>
-          <Grid item>
-            <ExpenseCard />
-          </Grid>
-          <Grid item>
-            <ExpenseCard />
-          </Grid>
-          <Grid item>
-            <ExpenseCard />
-          </Grid>
-          <Grid item>
-            <ExpenseCard />
-          </Grid>
-          <Grid item>
-            <ExpenseCard />
-          </Grid>
-          <Grid item>
-            <ExpenseCard />
-          </Grid>
-          <Grid item>
-            <ExpenseCard />
-          </Grid>
-          <Grid item>
-            <ExpenseCard />
-          </Grid>
+        <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }} sx={{ justifyContent: "flex-start" }}>
+          {budget.map((expense) => {
+            if (expense.budget_type.toLowerCase() === "expense") {
+              return (
+                <Grid item>
+                  <ExpenseCard expense={expense} key={expense["id"]} />
+                </Grid>
+              );
+            }
+          })}
         </Grid>
       </div>
     </div>
