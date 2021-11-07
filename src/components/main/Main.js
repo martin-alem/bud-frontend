@@ -1,5 +1,6 @@
 import React from "react";
 import "./Main.css";
+import Grid from "@mui/material/Grid";
 import DateSelector from "./../date_picker/DatePicker";
 import BarChart from "../bar_chart/BarChart";
 import PieChart from "../pie_chart/PieChart";
@@ -40,7 +41,35 @@ function Main() {
       </div>
 
       <div className="Main-expense">
-        <ExpenseCard />
+        <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }} sx={{ justifyContent: "center" }}>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+          <Grid item>
+            <ExpenseCard />
+          </Grid>
+        </Grid>
       </div>
     </div>
   );
