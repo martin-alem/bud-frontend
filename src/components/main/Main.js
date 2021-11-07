@@ -1,7 +1,10 @@
 import React from "react";
 import "./Main.css";
+import TextField from "@mui/material/TextField";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
 import Grid from "@mui/material/Grid";
-import DateSelector from "./../date_picker/DatePicker";
 import BarChart from "../bar_chart/BarChart";
 import PieChart from "../pie_chart/PieChart";
 import AddBudgetModal from "../modal/Modal";
@@ -12,6 +15,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 function Main() {
   const [budget, setBudget] = React.useState([]);
   const [fetching, setFetching] = React.useState(false);
+  const [date, setDate] = React.useState(new Date());
 
   React.useEffect(() => {
     const fetchBudget = async () => {
@@ -48,7 +52,17 @@ function Main() {
     </>
   ) : (
     <div className="Main">
-      <DateSelector />
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DatePicker
+          disableFuture
+          label="Pick Date"
+          value={date}
+          onChange={(newValue) => {
+            setDate(newValue);
+          }}
+          renderInput={(params) => <TextField {...params} sx={{ margin: "1rem" }} />}
+        />
+      </LocalizationProvider>
       <div className="Main-chart">
         <div className="Main-bar-chart">
           <BarChart />
@@ -83,8 +97,8 @@ function Main() {
           {budget.map((expense) => {
             if (expense.budget_type.toLowerCase() === "expense") {
               return (
-                <Grid item>
-                  <ExpenseCard expense={expense} key={expense["id"]} />
+                <Grid key={expense["id"]} item>
+                  <ExpenseCard expense={expense} />
                 </Grid>
               );
             }
