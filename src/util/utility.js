@@ -17,3 +17,9 @@ export function stringToColor(string) {
 
   return color;
 }
+
+export function getMonthAsString(dateAsString) {
+  const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const dateObject = new Date(dateAsString);
+  return month[dateObject.getMonth()];
+}

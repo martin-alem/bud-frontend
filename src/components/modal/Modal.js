@@ -1,4 +1,5 @@
 import React from "react";
+import { getMonthAsString } from "../../util/utility";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -56,12 +57,17 @@ function AddBudgetModal() {
   };
 
   const handleSubmit = () => {
-    if ((category === "" || amount === "" || description === "")) {
-      setError({ active: true, type: "error", message: "Provide all fields" });
+    if (category === "" || amount === "" || description === "") {
+      setError({ active: true, type: "error", message: "Oh no! please provide all fields" });
     } else if (isNaN(parseFloat(amount))) {
-      setError({ active: true, type: "error", message: "Amount must be a number" });
+      setError({ active: true, type: "error", message: "Ops! amount must be a number" });
     } else {
       setError({ active: true, type: "info", message: "Success! Budget successfully saved" });
+      const newAmount = parseFloat(amount);
+      const month = getMonthAsString(date);
+      const year = new Date(date).getFullYear().toString();
+      const budgetData = { name: description, amount: newAmount, category: category, month: month, year: year, budget_type: type };
+      console.log(budgetData);
       setCategory("");
       setType(type);
       setAmount("");
@@ -111,7 +117,7 @@ function AddBudgetModal() {
                 <InputLabel id="demo-simple-select-label">Budget Type</InputLabel>
                 <Select labelId="demo-simple-select-label" id="demo-simple-select" value={type} label="Budget Type" onChange={handleTypeChange}>
                   <MenuItem value="income">Income</MenuItem>
-                  <MenuItem value="expenditure">Expenditure</MenuItem>
+                  <MenuItem value="expense">Expenditure</MenuItem>
                 </Select>
               </FormControl>
             </Box>
