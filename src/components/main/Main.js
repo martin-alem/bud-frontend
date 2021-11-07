@@ -89,7 +89,7 @@ function Main() {
         </div>
       </div>
       <div className="Main-add">
-          <AddBudgetModal setBudget={setBudget}/>
+        <AddBudgetModal setBudget={setBudget} />
       </div>
 
       <div className="Main-expense">
@@ -98,9 +98,12 @@ function Main() {
             if (expense.budget_type.toLowerCase() === "expense") {
               return (
                 <Grid key={expense["id"]} item>
-                  <ExpenseCard expense={expense} />
+                  <ExpenseCard expense={expense} setBudget={setBudget} budget={budget} />
                 </Grid>
               );
+            } else
+            {
+              return []
             }
           })}
         </Grid>
