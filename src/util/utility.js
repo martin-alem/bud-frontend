@@ -23,3 +23,11 @@ export function getMonthAsString(dateAsString) {
   const dateObject = new Date(dateAsString);
   return month[dateObject.getMonth()];
 }
+
+export function fetch(url, options) {
+  if (options["method"] === "GET") {
+    return fetch(url, { method: "GET", headers: { Accept: "application/json" } });
+  } else if (options["method"] === "POST") {
+    return fetch(url, { method: "POST", body: JSON.stringify(options["body"]), headers: { "Content-Type": "application/json", Accept: "application/json" } });
+  }
+}

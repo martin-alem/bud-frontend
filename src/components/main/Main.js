@@ -89,7 +89,7 @@ function Main() {
         </div>
       </div>
       <div className="Main-add">
-        <AddBudgetModal />
+          <AddBudgetModal setBudget={setBudget}/>
       </div>
 
       <div className="Main-expense">

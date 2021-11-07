@@ -28,7 +28,7 @@ const style = {
   p: 4,
 };
 
-function AddBudgetModal() {
+function AddBudgetModal(props) {
   const [openModal, setOpenModal] = React.useState(false);
   const [type, setType] = React.useState("income");
   const [date, setDate] = React.useState(new Date());
@@ -67,7 +67,23 @@ function AddBudgetModal() {
       const month = getMonthAsString(date);
       const year = new Date(date).getFullYear().toString();
       const budgetData = { name: description, amount: newAmount, category: category, month: month, year: year, budget_type: type };
-      console.log(budgetData);
+      window
+        .fetch("https://bud-backendapi.herokuapp.com/budgets", { method: "POST", body: JSON.stringify(budgetData), headers: { "Content-Type": "application/json" } })
+        .then((response) => {
+          response
+            .json()
+            .then((data) => {
+              props.setBudget((prevState) => {
+                return [ ...prevState, data ];
+              });
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       setCategory("");
       setType(type);
       setAmount("");
