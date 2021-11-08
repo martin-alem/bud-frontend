@@ -24,6 +24,13 @@ function ExpenseCard(props) {
           response
             .json()
             .then(() => {
+              const newBudget = props.budget.map((d) => {
+                if (d.id === expense.id) {
+                  d.amount = parseFloat(newAmount);
+                }
+                return d;
+              });
+              props.setBudget(newBudget)
               setExpense((prevState) => {
                 return { ...prevState, amount: newAmount };
               });

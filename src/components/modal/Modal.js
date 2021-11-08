@@ -1,14 +1,10 @@
 import React from "react";
-import { getMonthAsString } from "../../util/utility";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -31,7 +27,7 @@ const style = {
 function AddBudgetModal(props) {
   const [openModal, setOpenModal] = React.useState(false);
   const [type, setType] = React.useState("income");
-  const [date, setDate] = React.useState(new Date());
+  const [date, setDate] = React.useState("");
   const [category, setCategory] = React.useState("");
   const [amount, setAmount] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -40,10 +36,12 @@ function AddBudgetModal(props) {
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
   const handleTypeChange = (event) => {
-    setCategory("");
     setType(event.target.value);
   };
 
+  const handleDateChange = (event) => {
+    setDate(event.target.value);
+  };
   const handleCategoryChange = (event) => {
     setCategory(event.target.value);
   };
@@ -57,15 +55,15 @@ function AddBudgetModal(props) {
   };
 
   const handleSubmit = () => {
-    if (category === "" || amount === "" || description === "") {
+    if (type === "" || date === "" || category === "" || amount === "" || description === "") {
       setError({ active: true, type: "error", message: "Oh no! please provide all fields" });
     } else if (isNaN(parseFloat(amount))) {
       setError({ active: true, type: "error", message: "Ops! amount must be a number" });
     } else {
       setError({ active: true, type: "info", message: "Success! Budget successfully saved" });
       const newAmount = parseFloat(amount);
-      const month = getMonthAsString(date);
-      const year = new Date(date).getFullYear().toString();
+      const month = date;
+      const year = new Date().getFullYear().toString();
       const budgetData = { name: description, amount: newAmount, category: category, month: month, year: year, budget_type: type };
       window
         .fetch("https://bud-backendapi.herokuapp.com/budgets", { method: "POST", body: JSON.stringify(budgetData), headers: { "Content-Type": "application/json" } })
@@ -74,7 +72,7 @@ function AddBudgetModal(props) {
             .json()
             .then((data) => {
               props.setBudget((prevState) => {
-                return [ ...prevState, data ];
+                return [...prevState, data];
               });
             })
             .catch((error) => {
@@ -86,6 +84,7 @@ function AddBudgetModal(props) {
         });
       setCategory("");
       setType(type);
+      setDate("");
       setAmount("");
       setDescription("");
     }
@@ -117,17 +116,25 @@ function AddBudgetModal(props) {
             noValidate
             autoComplete="off"
           >
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                disableFuture
-                label="Pick Date"
-                value={date}
-                onChange={(newValue) => {
-                  setDate(newValue);
-                }}
-                renderInput={(params) => <TextField {...params} sx={{ margin: "1rem" }} />}
-              />
-            </LocalizationProvider>
+            <Box sx={{ width: "100%", p: 2}}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Budget Date</InputLabel>
+                <Select labelId="demo-simple-select-label" id="demo-simple-select" value={date} label="Expense Category" onChange={handleDateChange}>
+                  <MenuItem value="january">January</MenuItem>
+                  <MenuItem value="february">February</MenuItem>
+                  <MenuItem value="march">March</MenuItem>
+                  <MenuItem value="april">April</MenuItem>
+                  <MenuItem value="may">May</MenuItem>
+                  <MenuItem value="june">June</MenuItem>
+                  <MenuItem value="July">July</MenuItem>
+                  <MenuItem value="august">August</MenuItem>
+                  <MenuItem value="september">September</MenuItem>
+                  <MenuItem value="october">October</MenuItem>
+                  <MenuItem value="november">November</MenuItem>
+                  <MenuItem value="december">December</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
             <Box sx={{ width: "100%" }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Budget Type</InputLabel>
