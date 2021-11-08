@@ -19,7 +19,14 @@ function BarChart() {
         }}
         width={100}
         height={100}
-        options={{ maintainAspectRatio: true, scales: { y: { beginAtZero: true } }}}
+        options={{
+          maintainAspectRatio: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        }}
       />
     </div>
   );

@@ -7,10 +7,10 @@ import { Edit, Delete, Check } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 
-function ExpenseCard(props) {
+function IncomeCard(props) {
   const [editMode, setEditMode] = React.useState(false);
   const [newAmount, setAmount] = React.useState("");
-  const [expense, setExpense] = React.useState(props.expense);
+  const [income, setIncome] = React.useState(props.income);
   const handleEditMode = () => {
     setEditMode(!editMode);
   };
@@ -19,12 +19,12 @@ function ExpenseCard(props) {
     if (newAmount !== "" || !isNaN(parseFloat(newAmount))) {
       const data = { amount: parseFloat(newAmount) };
       window
-        .fetch(`https://bud-backendapi.herokuapp.com/budgets/${expense.id}`, { method: "PUT", body: JSON.stringify(data), headers: { "Content-Type": "application/json" } })
+        .fetch(`https://bud-backendapi.herokuapp.com/budgets/${income.id}`, { method: "PUT", body: JSON.stringify(data), headers: { "Content-Type": "application/json" } })
         .then((response) => {
           response
             .json()
             .then(() => {
-              setExpense((prevState) => {
+              setIncome((prevState) => {
                 return { ...prevState, amount: newAmount };
               });
             })
@@ -43,10 +43,10 @@ function ExpenseCard(props) {
 
   const handleDelete = () => {
     window
-      .fetch(`https://bud-backendapi.herokuapp.com/budgets/${expense.id}`, { method: "DELETE", headers: { Accept: "application/json" } })
+      .fetch(`https://bud-backendapi.herokuapp.com/budgets/${income.id}`, { method: "DELETE", headers: { Accept: "application/json" } })
       .then((response) => {
         if (response.ok && response.status === 204) {
-          const newBudget = props.budget.filter((b) => b.id !== expense.id);
+          const newBudget = props.budget.filter((b) => b.id !== income.id);
           props.setBudget(newBudget);
         } else {
           console.error("error");
@@ -62,12 +62,12 @@ function ExpenseCard(props) {
   const options = { style: "currency", currency: "USD" };
   const numberFormat = new Intl.NumberFormat("en-US", options);
   return (
-    <Card sx={{ minWidth: 275, backgroundColor: "rgb(255, 99, 132)", color: "white" }}>
+    <Card sx={{ minWidth: 275, backgroundColor: "rgb(54, 162, 235)", color: "white" }}>
       <CardContent>
         {!editMode ? (
           <>
             <Typography variant="h2" component="h2" sx={{ fontWeight: "bolder" }}>
-              - {numberFormat.format(expense.amount)}
+              +{numberFormat.format(income.amount)}
             </Typography>
           </>
         ) : (
@@ -80,7 +80,7 @@ function ExpenseCard(props) {
         <Grid container spacing={2} sx={{ alignItems: "center" }}>
           <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
             <Typography variant="h4" component="h4" sx={{ textTransform: "capitalize" }}>
-              {expense.category}
+              {income.category}
             </Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -109,4 +109,4 @@ function ExpenseCard(props) {
   );
 }
 
-export default ExpenseCard;
+export default IncomeCard;
