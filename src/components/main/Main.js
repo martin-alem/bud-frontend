@@ -17,7 +17,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-import { extractDate} from "./../../util/utility";
+import { extractDate } from "./../../util/utility";
 
 function Main() {
   const [budget, setBudget] = React.useState([]);
@@ -74,7 +74,7 @@ function Main() {
           <InputLabel id="demo-simple-select-label">Select A Budget</InputLabel>
           <Select labelId="demo-simple-select-label" id="demo-simple-select" value={budgetDate} label="Expense Category" onChange={handleBudgetDateChange}>
             {extractDate(budget).map((date, index) => (
-              <MenuItem key={index} value={date}>
+              <MenuItem key={index} value={date} style={{ textTransform: "capitalize" }}>
                 {date}
               </MenuItem>
             ))}
