@@ -10,55 +10,14 @@
 }
 
 .Main-bar-chart {
-  width: 40%;
+  width: 50%;
 }
 
 .Main-pie-chart {
-  width: 60%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.Main-income,
-.Main-expenditure,
-.Main-saving {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.Main-pie {
   width: 50%;
-  height: 80%;
-}
-.Main-details {
-  height: 20%;
-  display: flex;
-  justify-content: space-evenly;
-  font-size: 2.5rem;
-  font-weight: bolder;
 }
 
-.Main-income-label {
-  width: 3rem;
-  height: 3rem;
-  background-color: rgb(54, 162, 235);
-}
 
-.Main-expenditure-label {
-  width: 3rem;
-  height: 3rem;
-  background-color: rgb(255, 99, 132);
-  margin-left: 1rem;
-}
-
-.Main-saving-label {
-  width: 3rem;
-  height: 3rem;
-  background-color: rgb(255, 205, 86);
-  margin-left: 1rem;
-}
 
 .Main-add {
   display: flex;
@@ -74,7 +33,7 @@
   .Main-chart {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column-reverse;
   }
 
   .Main-bar-chart {
@@ -103,18 +62,5 @@
 
   .Main-pie-chart {
     width: 100%;
-  }
-
-  .Main-pie {
-    width: 100%;
-    height: 80%;
-  }
-
-  .Main-details {
-    height: 20%;
-    display: flex;
-    justify-content: space-evenly;
-    font-size: 1.3rem;
-    font-weight: bolder;
   }
 }

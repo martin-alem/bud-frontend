@@ -1,9 +1,5 @@
 import React from "react";
 import "./Main.css";
-import TextField from "@mui/material/TextField";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
 import Grid from "@mui/material/Grid";
 import BarChart from "../bar_chart/BarChart";
 import PieChart from "../pie_chart/PieChart";
@@ -17,16 +13,25 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import { extractDate} from "./../../util/utility";
 
 function Main() {
   const [budget, setBudget] = React.useState([]);
   const [fetching, setFetching] = React.useState(false);
-  const [date, setDate] = React.useState(new Date());
+  const [budgetDate, setBudgetDateChange] = React.useState("");
 
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleBudgetDateChange = (event) => {
+    setBudgetDateChange(event.target.value);
   };
 
   React.useEffect(() => {
@@ -64,17 +69,18 @@ function Main() {
     </>
   ) : (
     <div className="Main">
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DatePicker
-          disableFuture
-          label="Pick Date"
-          value={date}
-          onChange={(newValue) => {
-            setDate(newValue);
-          }}
-          renderInput={(params) => <TextField {...params} sx={{ margin: "1rem" }} />}
-        />
-      </LocalizationProvider>
+      <Box sx={{ width: "50%" }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Select A Budget</InputLabel>
+          <Select labelId="demo-simple-select-label" id="demo-simple-select" value={budgetDate} label="Expense Category" onChange={handleBudgetDateChange}>
+            {extractDate(budget).map((date, index) => (
+              <MenuItem key={index} value={date}>
+                {date}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
       <div className="Main-chart">
         <div className="Main-bar-chart">
           <BarChart />
@@ -82,21 +88,6 @@ function Main() {
         <div className="Main-pie-chart">
           <div className="Main-pie">
             <PieChart />
-          </div>
-
-          <div className="Main-details">
-            <div className="Main-income">
-              <div className="Main-income-label"></div>
-              <p>$ 40,000</p>
-            </div>
-            <div className="Main-expenditure">
-              <div className="Main-expenditure-label"></div>
-              <p>$ 10,000</p>
-            </div>
-            <div className="Main-saving">
-              <div className="Main-saving-label"></div>
-              <p>$ 3000</p>
-            </div>
           </div>
         </div>
       </div>

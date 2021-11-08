@@ -24,6 +24,14 @@ export function getMonthAsString(dateAsString) {
   return month[dateObject.getMonth()];
 }
 
+export function extractDate(budgetArray) {
+  const dates = budgetArray.map((budget) => {
+    return `${budget["month"]}, ${budget["year"]}`;
+  });
+
+  return [...new Set(dates)];
+}
+
 export function fetch(url, options) {
   if (options["method"] === "GET") {
     return fetch(url, { method: "GET", headers: { Accept: "application/json" } });
