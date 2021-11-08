@@ -83,11 +83,11 @@ function Main() {
       </Box>
       <div className="Main-chart">
         <div className="Main-bar-chart">
-          <BarChart />
+            <BarChart chartData={budget}/>
         </div>
         <div className="Main-pie-chart">
           <div className="Main-pie">
-            <PieChart />
+              <PieChart chartData={budget}/>
           </div>
         </div>
       </div>
