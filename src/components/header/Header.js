@@ -30,7 +30,7 @@ function Header() {
   return (
     <div className="Header">
       <AppBar position="static" sx={{ backgroundColor: "#f6f9fc", width: "100%" }}>
-        <Toolbar sx={{ justifyContent: "flex-end", width: "100%" }}><img src="https://i.imgur.com/C73Dosz.png" alt="logo" height="10%" width="10%" anchor="flex-left"
+        <Toolbar sx={{ justifyContent: "space-between", width: "100%" }}><img src="https://i.imgur.com/C73Dosz.png" alt="logo" height="100" width="100" anchor="flex-left"
         />
           {auth && (
             <div>
