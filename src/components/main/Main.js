@@ -31,7 +31,14 @@ function Main() {
   };
 
   const handleBudgetDateChange = (event) => {
+    filterBudget(budget, event.target.value);
     setBudgetDateChange(event.target.value);
+  };
+
+  const filterBudget = (rawBudget, month) => {
+    const d = month.split(",");
+    const currentBudget = budget.filter(b => b.month === d[0]);
+    console.log(currentBudget)
   };
 
   React.useEffect(() => {
@@ -83,11 +90,11 @@ function Main() {
       </Box>
       <div className="Main-chart">
         <div className="Main-bar-chart">
-            <BarChart chartData={budget}/>
+          <BarChart chartData={budget} />
         </div>
         <div className="Main-pie-chart">
           <div className="Main-pie">
-              <PieChart chartData={budget}/>
+            <PieChart chartData={budget} />
           </div>
         </div>
       </div>
